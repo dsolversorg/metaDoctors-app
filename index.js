@@ -1,3 +1,3 @@
 export const applyCustomCode = (externalCodeSetup: any) => {
-	alert('teste');
+	alert('Soooo dalee');
 };
