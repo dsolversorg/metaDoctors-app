@@ -1,8 +1,10 @@
-import React, { useState } from "react";
-import { StyleSheet, View, TextInput, TouchableOpacity, Text, ScrollView } from 'react-native';
+import React, { useState, useEffect } from "react";
+import { StyleSheet, View, Image, TextInput, TouchableOpacity, Text, ScrollView } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { Picker } from '@react-native-picker/picker';
 import { specialties, UF } from '../constants/constants';
+import api from "../services/api";
+import crmApi from "../services/crmApi";
 
 const Signup = () => {
     const [email, setEmail] = useState('');
@@ -21,6 +23,8 @@ const Signup = () => {
     const [cpfError, setCpfError] = useState(false);
     const [TypeError, setTypeError] = useState(false);
     const [errorText, setErrorText] = useState('');
+    const [doctorName, setDoctorName] = useState('');
+    const token = '1112d5aa-5586-4a4d-8413-08c2257e5989';
 
     function errorFillIn(campo, setError) {
         if (campo !== '') {
@@ -32,13 +36,31 @@ const Signup = () => {
         }
     }
 
+    async function validateCrm() {
+        console.log("response aaaaaa");
+        const response = await crmApi(`ValidaCrm?token=${token}&crm=${crm}&UF=${uf}`);
+        try {
+            if (response.status === 200) {
+                const responseData = JSON.parse(response.request._response);
+                setDoctorName(responseData.dadosMedico.nome);
+                console.log(doctorName);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+        console.log(response);
+    }
+
+    // useEffect(() => {
+    //     validateCrm();
+    // }, [])
+
     return (
         <LinearGradient colors={['#5025F1', '#E500F7',]} style={styles.gradient}>
             <View style={styles.container}>
                 <ScrollView style={styles.scrollViewContent} >
                     <View style={styles.cont}>
                         <Text style={styles.header}>Cadastro</Text>
-
                         <View style={styles.contInp}>
                             {emailError && email === '' ? <Text style={styles.errorText}>{errorText}</Text> : null}
                             <Text style={styles.label}>E-mail</Text>
@@ -71,11 +93,11 @@ const Signup = () => {
                             <Text style={styles.label}>Telefone</Text>
                             <TextInput
                                 style={styles.inputLogin}
-                            placeholder="Insira seu Telefone"
-                            placeholderTextColor="#ffffff4d"
-                            keyboardType="phone-pad"
-                            onChangeText={(telephone) => { setTelephone(telephone) }}
-                            onBlur={() => errorFillIn(telephone, setTelephoneError)}
+                                placeholder="Insira seu Telefone"
+                                placeholderTextColor="#ffffff4d"
+                                keyboardType="phone-pad"
+                                onChangeText={(telephone) => { setTelephone(telephone) }}
+                                onBlur={() => errorFillIn(telephone, setTelephoneError)}
                             />
                         </View>
 
@@ -137,6 +159,7 @@ const Signup = () => {
                                         placeholderTextColor="#fff"
                                         keyboardType="numeric"
                                         onChangeText={(crm) => { setCrm(crm) }}
+                                        onBlur={validateCrm}
                                     />
                                 </View>
                                 <View style={styles.contInp}>
@@ -144,6 +167,7 @@ const Signup = () => {
                                     <TextInput
                                         style={styles.inputLogin}
                                         placeholder="Nome"
+                                        value={doctorName}
                                         placeholderTextColor="#fff"
                                         keyboardType="default"
                                         onChangeText={(name) => { setName(name) }}
@@ -192,6 +216,10 @@ const Signup = () => {
 }
 
 const styles = StyleSheet.create({
+    testImg: {
+        height: 200,
+        width: 200,
+    },
 
     errorText: {
         color: 'red', // ou qualquer cor que você deseje
