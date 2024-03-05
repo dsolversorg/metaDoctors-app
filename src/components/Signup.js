@@ -3,33 +3,60 @@ import { StyleSheet, View, TextInput, TouchableOpacity, Text, ScrollView } from 
 import LinearGradient from 'react-native-linear-gradient'; // Importando o LinearGradient
 import { Picker, PickerItem } from '@react-native-picker/picker';
 import { specialties, UF } from '../constants/constants'
-
+ 
 const Signup = () => {
-    const [typeUser, setTypeUser] = useState('');
+ 
+    const [email, setEmail] = useState('');
+    const [senha, setSenha] = useState('');
+    const [telephone, setTelephone] = useState('');
+    const [cpf, setCpf] = useState('');
+    const [crm, setCrm] = useState('');
+    const [name, setName] = useState('');
     const [uf, setUf] = useState('');
     const [specialty, setSpecialty] = useState('');
-
+    const [typeUser, setTypeUser] = useState('');
+ 
+    const [errorText, setErrorText] = useState('');
+    const [error, setError] = useState(false);
+ 
     console.warn(specialties, UF)
-
+ 
+    function errorFillIn(campo) {
+ 
+        if (error && campo !== '') {
+            setErrorText('');
+            setError(false);
+        }
+        else {
+            setErrorText('Preencha este campo!');
+            setError(true);
+        }
+ 
+    }
+ 
     return (
         <LinearGradient colors={['#5025F1', '#E500F7',]} style={styles.gradient}>
             <View style={styles.container}>
                 <ScrollView style={styles.scrollViewContent} >
                     <View style={styles.cont}>
-
+ 
                         <Text style={styles.header}>Cadastro</Text>
-
+ 
                         <View style={styles.contInp}>
+                            {error && email === '' ? <Text>{errorText}</Text> : null}
                             <Text style={styles.label}>E-mail</Text>
                             <TextInput
                                 style={styles.inputLogin}
                                 placeholder="Insira seu E-mail"
                                 placeholderTextColor="#ffffff4d"
                                 keyboardType="email-address"
+                                onChangeText={(email) => { setEmail(email) }}
+                                onBlur={() => errorFillIn(email)}
                             />
                         </View>
-
+ 
                         <View style={styles.contInp}>
+                            {error && senha === '' ? <Text>{errorText}</Text> : null}
                             <Text style={styles.label}>Senha</Text>
                             <TextInput
                                 style={styles.inputLogin}
@@ -37,9 +64,11 @@ const Signup = () => {
                                 placeholderTextColor="#ffffff4d"
                                 keyboardType="default"
                                 secureTextEntry={true}
+                                onChangeText={(senha) => { setSenha(senha) }}
+                                onBlur={() => errorFillIn(senha)}
                             />
                         </View>
-
+ 
                         <View style={styles.contInp}>
                             <Text style={styles.label}>Telefone</Text>
                             <TextInput
@@ -47,9 +76,10 @@ const Signup = () => {
                                 placeholder="Insira seu Telefone"
                                 placeholderTextColor="#ffffff4d"
                                 keyboardType="phone-pad"
+                                onChangeText={(telephone) => { setTelephone(telephone) }}
                             />
                         </View>
-
+ 
                         <View style={styles.contInp}>
                             <Text style={styles.label}>CPF</Text>
                             <TextInput
@@ -57,9 +87,10 @@ const Signup = () => {
                                 placeholder="Insira seu CPF"
                                 placeholderTextColor="#ffffff4d"
                                 keyboardType="numeric"
+                                onChangeText={(cpf) => { setCpf(cpf) }}
                             />
                         </View>
-
+ 
                         <View style={styles.contInp}>
                             <Text style={styles.label}>Tipo de usuário</Text>
                             <Picker
@@ -73,7 +104,7 @@ const Signup = () => {
                                 <Picker.Item style={styles.inputLogin} label="Eu sou Estudante" value="Estudante" />
                             </Picker>
                         </View>
-
+ 
                         {
                             typeUser === 'Medico' ?
                                 <>
@@ -102,6 +133,7 @@ const Signup = () => {
                                             placeholder="CRM - ele vai ter uma validação"
                                             placeholderTextColor="#fff"
                                             keyboardType="numeric"
+                                            onChangeText={(crm) => { setCrm(crm) }}
                                         />
                                     </View>
                                     <View style={styles.contInp}>
@@ -111,6 +143,7 @@ const Signup = () => {
                                             placeholder="Nome"
                                             placeholderTextColor="#fff"
                                             keyboardType="default"
+                                            onChangeText={(name) => { setName(name) }}
                                         />
                                     </View>
                                     <View style={styles.contInp}>
@@ -140,11 +173,12 @@ const Signup = () => {
                                             placeholder="Nome"
                                             placeholderTextColor="#fff"
                                             keyboardType="default"
+                                            onChangeText={(name) => { setName(name) }}
                                         />
                                     </View> : null
                         }
-
-
+ 
+ 
                         <TouchableOpacity style={styles.btnLogin}>
                             <Text style={styles.btnLoginText}>Criar conta</Text>
                         </TouchableOpacity>
@@ -154,7 +188,7 @@ const Signup = () => {
         </LinearGradient>
     )
 }
-
+ 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -195,7 +229,7 @@ const styles = StyleSheet.create({
     inputLogin: {
         width: "85%",
         fontSize: 18,
-        // height: 55, 
+        // height: 55,
         marginBottom: 10,
         borderRadius: 10,
         backgroundColor: 'rgba(12,12,12,0.34)',
@@ -231,11 +265,11 @@ const styles = StyleSheet.create({
         width: "85%",
         height: 40,
     },
-
+ 
     pickerite: {
         width: "85%",
         // height: 40,
     },
 });
-
+ 
 export default Signup
