@@ -90,10 +90,10 @@ const Signup = () => {
 
                         <View style={styles.contInp}>
                             {telephoneError && telephone === '' ? <Text style={styles.errorText}>{errorText}</Text> : null}
-                            <Text style={styles.label}>Telefone</Text>
+                            <Text style={styles.label}>Celular</Text>
                             <TextInput
                                 style={styles.inputLogin}
-                                placeholder="Insira seu Telefone"
+                                placeholder="Insira seu número de Celular"
                                 placeholderTextColor="#ffffff4d"
                                 keyboardType="phone-pad"
                                 onChangeText={(telephone) => { setTelephone(telephone) }}
