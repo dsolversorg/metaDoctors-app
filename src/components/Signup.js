@@ -13,6 +13,7 @@ const Signup = () => {
     const [cpf, setCpf] = useState('');
     const [crm, setCrm] = useState('');
     const [name, setName] = useState('');
+    const [nameUser, setNameUser] = useState('');
     const [uf, setUf] = useState('');
     const [specialty, setSpecialty] = useState('');
     const [typeUser, setTypeUser] = useState('');
@@ -21,8 +22,10 @@ const Signup = () => {
     const [senhaError, setSenhaError] = useState(false);
     const [telephoneError, setTelephoneError] = useState(false);
     const [cpfError, setCpfError] = useState(false);
+    const [nameUserError, setNameUserError] = useState(false);
     const [TypeError, setTypeError] = useState(false);
     const [errorText, setErrorText] = useState('');
+    const [errorTextCrm, setErrorTextCrm] = useState('');
     const [doctorName, setDoctorName] = useState('');
     const token = '1112d5aa-5586-4a4d-8413-08c2257e5989';
 
@@ -37,19 +40,56 @@ const Signup = () => {
     }
 
     async function validateCrm() {
-        console.log("response aaaaaa");
         const response = await crmApi(`ValidaCrm?token=${token}&crm=${crm}&UF=${uf}`);
         try {
             if (response.status === 200) {
                 const responseData = JSON.parse(response.request._response);
                 setDoctorName(responseData.dadosMedico.nome);
+                setName(doctorName)
                 console.log(doctorName);
+            } else if (response.status === 204) {
+                setErrorTextCrm('Crm Invalido!')
             }
         } catch (error) {
             console.log(error);
         }
         console.log(response);
     }
+
+    async function signup() {
+        console.log("entrou no cadastro");
+    
+        try {
+            const response = await api.post('v1/signup', {
+                signup_email: email,
+                signup_password: senha,
+                field_1: name,
+                field_25: uf,
+                field_696: typeUser,
+                field_698: cpf,
+                field_3: nameUser,
+                field_432: telephone,
+                field_26: specialty,
+                legal_agreement: true,
+            });
+    
+            console.log('Resposta da API:', response.data);
+    
+            if (response.status === 200) {
+                console.log('Sucesso!');
+                // Trabalhe com os dados de resposta conforme necessário
+            } else if (response.status === 400) {
+                console.log('Erro 400 - Bad Request:', response);
+                // Lidar com erro 400
+            } else if (response.status === 401) {
+                console.log('Erro 401 - Unauthorized');
+                // Lidar com erro 401
+            }
+        } catch (error) {
+            console.error('Erro na requisição:', error.message);
+        }
+    }
+    
 
     // useEffect(() => {
     //     validateCrm();
@@ -89,6 +129,19 @@ const Signup = () => {
                         </View>
 
                         <View style={styles.contInp}>
+                            {nameUserError && nameUser === '' ? <Text style={styles.errorText}>{errorText}</Text> : null}
+                            <Text style={styles.label}>Nome de Usuario</Text>
+                            <TextInput
+                                style={styles.inputLogin}
+                                placeholder="Insira seu Nome de Usuario"
+                                placeholderTextColor="#ffffff4d"
+                                keyboardType="default"
+                                onChangeText={(nameUser) => { setNameUser(nameUser) }}
+                                onBlur={() => errorFillIn(nameUser, setNameUserError)}
+                            />
+                        </View>
+
+                        <View style={styles.contInp}>
                             {telephoneError && telephone === '' ? <Text style={styles.errorText}>{errorText}</Text> : null}
                             <Text style={styles.label}>Celular</Text>
                             <TextInput
@@ -115,6 +168,25 @@ const Signup = () => {
                         </View>
 
                         <View style={styles.contInp}>
+                            <Text style={styles.label}>uf</Text>
+                            <Picker
+                                style={styles.pickerite}
+                                selectedValue={uf}
+                                onValueChange={(itemValue, itemIndex) =>
+                                    setUf(itemValue)
+                                }>
+                                {UF.map((states, index) => (
+                                    <Picker.Item
+                                        key={index}
+                                        label={states}
+                                        value={states}
+                                        style={styles.inputLogin}
+                                    />
+                                ))}
+                            </Picker>
+                        </View>
+
+                        <View style={styles.contInp}>
                             {TypeError && typeUser === "" ? <Text style={styles.errorText}>{errorText}</Text> : null}
                             <Text style={styles.label}>Tipo de usuário</Text>
                             <Picker
@@ -134,24 +206,7 @@ const Signup = () => {
                         {typeUser === 'Medico' || typeUser === 'Residente' ?
                             <>
                                 <View style={styles.contInp}>
-                                    <Text style={styles.label}>uf</Text>
-                                    <Picker
-                                        style={styles.pickerite}
-                                        selectedValue={uf}
-                                        onValueChange={(itemValue, itemIndex) =>
-                                            setUf(itemValue)
-                                        }>
-                                        {UF.map((states, index) => (
-                                            <Picker.Item
-                                                key={index}
-                                                label={states}
-                                                value={states}
-                                                style={styles.inputLogin}
-                                            />
-                                        ))}
-                                    </Picker>
-                                </View>
-                                <View style={styles.contInp}>
+                                    {crm !== "" ? <Text style={styles.errorText}>{errorTextCrm}</Text> : null}
                                     <Text style={styles.label}>CRM</Text>
                                     <TextInput
                                         style={styles.inputLogin}
@@ -167,7 +222,6 @@ const Signup = () => {
                                     <TextInput
                                         style={styles.inputLogin}
                                         placeholder="Nome"
-                                        value={doctorName}
                                         placeholderTextColor="#fff"
                                         keyboardType="default"
                                         onChangeText={(name) => { setName(name) }}
@@ -205,7 +259,9 @@ const Signup = () => {
                                 </View> : null
                         }
 
-                        <TouchableOpacity style={styles.btnLogin}>
+                        
+
+                        <TouchableOpacity style={styles.btnLogin} onPress={signup}>
                             <Text style={styles.btnLoginText}>Criar conta</Text>
                         </TouchableOpacity>
                     </View>

@@ -2,7 +2,7 @@
 import axios from 'axios';
  
 const api = axios.create({
-    baseURL: 'https://metadoctors.com.br/wp-json/buddyboss-app/auth/v1/jwt'
+    baseURL: 'https://metadoctors.com.br/app/wp-json/buddyboss-app/'
 })
  
 export default api
