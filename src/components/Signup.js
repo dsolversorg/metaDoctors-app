@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Image, TextInput, TouchableOpacity, Text, ScrollView } from 'react-native';
+import React, { useState, useEffect, useRef } from "react";
+import { StyleSheet, View, Image, TextInput, TouchableOpacity, Text, ScrollView, Switch } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { Picker } from '@react-native-picker/picker';
 import { specialties, UF } from '../constants/constants';
@@ -18,6 +18,9 @@ const Signup = () => {
     const [specialty, setSpecialty] = useState('');
     const [typeUser, setTypeUser] = useState('');
 
+    const [isEnabled, setIsEnabled] = useState(false);
+    const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+
     const [emailError, setEmailError] = useState(false);
     const [senhaError, setSenhaError] = useState(false);
     const [telephoneError, setTelephoneError] = useState(false);
@@ -25,9 +28,40 @@ const Signup = () => {
     const [nameUserError, setNameUserError] = useState(false);
     const [TypeError, setTypeError] = useState(false);
     const [errorText, setErrorText] = useState('');
+    const [errorTextEmail, setErrorTextEmail] = useState('');
+    const [errorTextUser, setErrorTextUser] = useState('');
     const [errorTextCrm, setErrorTextCrm] = useState('');
     const [doctorName, setDoctorName] = useState('');
     const token = '1112d5aa-5586-4a4d-8413-08c2257e5989';
+
+    const scrollViewRef = useRef(null);
+
+
+
+    // Função para formatar o número de telefone
+    const formatPhoneNumber = (input) => {
+        // Remove qualquer caractere que não seja número
+        let formattedNumber = input.replace(/\D/g, '');
+
+        // Aplica a máscara (XX) XXXXX-XXXX
+        formattedNumber = formattedNumber.replace(/^(\d{2})(\d{5})(\d{4}).*/, '($1) $2-$3');
+
+        // Atualiza o estado do telefone com o número formatado
+        setTelephone(formattedNumber);
+    };
+
+    const formatCPF = (input) => {
+        // Remove qualquer caractere que não seja número
+        let formattedCPF = input.replace(/\D/g, '');
+
+        // Aplica a máscara XXX.XXX.XXX-XX
+        formattedCPF = formattedCPF.replace(/^(\d{3})(\d{3})(\d{3})(\d{2}).*/, '$1.$2.$3-$4');
+
+        // Atualiza o estado do CPF com o número formatado
+        setCpf(formattedCPF);
+    };
+
+
 
     function errorFillIn(campo, setError) {
         if (campo !== '') {
@@ -58,7 +92,7 @@ const Signup = () => {
 
     async function signup() {
         console.log("entrou no cadastro");
-    
+
         try {
             const response = await api.post('v1/signup', {
                 signup_email: email,
@@ -70,26 +104,32 @@ const Signup = () => {
                 field_3: nameUser,
                 field_432: telephone,
                 field_26: specialty,
-                legal_agreement: true,
+                legal_agreement: isEnabled,
             });
-    
+
             console.log('Resposta da API:', response.data);
-    
+
             if (response.status === 200) {
                 console.log('Sucesso!');
-                // Trabalhe com os dados de resposta conforme necessário
-            } else if (response.status === 400) {
-                console.log('Erro 400 - Bad Request:', response);
-                // Lidar com erro 400
-            } else if (response.status === 401) {
-                console.log('Erro 401 - Unauthorized');
-                // Lidar com erro 401
+
             }
         } catch (error) {
-            console.error('Erro na requisição:', error.message);
-        }
-    }
+            console.error('Erro na requisição:', error);
     
+            if (error.response.status === 400) {
+                console.log('Erro 400 - Bad Request:', error);
+                console.log('aaaaa: ', error.response.data.message.signup_email);
+                scrollViewRef.current.scrollTo({ y: 0, animated: true });
+                setErrorTextEmail(error.response.data.message.signup_email);
+                setErrorTextUser(error.response.data.message.field_3);
+            } else if (error.response.status === 401) {
+                console.log('Erro 401 - Unauthorized');
+            } else {
+                console.error('Erro não tratado:', error);
+            }
+        }   
+    }
+
 
     // useEffect(() => {
     //     validateCrm();
@@ -98,11 +138,12 @@ const Signup = () => {
     return (
         <LinearGradient colors={['#5025F1', '#E500F7',]} style={styles.gradient}>
             <View style={styles.container}>
-                <ScrollView style={styles.scrollViewContent} >
+                <ScrollView style={styles.scrollViewContent} ref={scrollViewRef}>
                     <View style={styles.cont}>
                         <Text style={styles.header}>Cadastro</Text>
                         <View style={styles.contInp}>
                             {emailError && email === '' ? <Text style={styles.errorText}>{errorText}</Text> : null}
+                            {errorTextEmail ? <Text style={styles.errorText}>{errorTextEmail}</Text> : null}
                             <Text style={styles.label}>E-mail</Text>
                             <TextInput
                                 style={styles.inputLogin}
@@ -130,6 +171,7 @@ const Signup = () => {
 
                         <View style={styles.contInp}>
                             {nameUserError && nameUser === '' ? <Text style={styles.errorText}>{errorText}</Text> : null}
+                            {errorTextUser? <Text style={styles.errorText}>{errorTextUser}</Text> : null}
                             <Text style={styles.label}>Nome de Usuario</Text>
                             <TextInput
                                 style={styles.inputLogin}
@@ -143,13 +185,14 @@ const Signup = () => {
 
                         <View style={styles.contInp}>
                             {telephoneError && telephone === '' ? <Text style={styles.errorText}>{errorText}</Text> : null}
-                            <Text style={styles.label}>Celular</Text>
+                            <Text style={styles.label}>Telefone</Text>
                             <TextInput
                                 style={styles.inputLogin}
                                 placeholder="Insira seu número de Celular"
                                 placeholderTextColor="#ffffff4d"
                                 keyboardType="phone-pad"
-                                onChangeText={(telephone) => { setTelephone(telephone) }}
+                                value={telephone}
+                                onChangeText={(text) => formatPhoneNumber(text)}
                                 onBlur={() => errorFillIn(telephone, setTelephoneError)}
                             />
                         </View>
@@ -162,7 +205,8 @@ const Signup = () => {
                                 placeholder="Insira seu CPF"
                                 placeholderTextColor="#ffffff4d"
                                 keyboardType="numeric"
-                                onChangeText={(cpf) => { setCpf(cpf) }}
+                                value={cpf}
+                                onChangeText={(text) => formatCPF(text)}
                                 onBlur={() => errorFillIn(cpf, setCpfError)}
                             />
                         </View>
@@ -259,7 +303,17 @@ const Signup = () => {
                                 </View> : null
                         }
 
-                        
+                        <View style={styles.contCheck}>
+                            <Switch
+                                trackColor={{ false: '#767577', true: '#81b0ff' }}
+                                thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
+                                ios_backgroundColor="#3e3e3e"
+                                onValueChange={toggleSwitch}
+                                value={isEnabled}
+                                style={styles.checkBox}
+                            />
+                            <Text>aceito os termos de serviços</Text>
+                        </View>
 
                         <TouchableOpacity style={styles.btnLogin} onPress={signup}>
                             <Text style={styles.btnLoginText}>Criar conta</Text>
@@ -310,6 +364,13 @@ const styles = StyleSheet.create({
     contInp: {
         width: '100%',
         alignItems: 'center',
+        marginBottom: 10
+    },
+    contCheck: {
+        width: '100%',
+        justifyContent: 'center',
+        flexDirection: 'row',
+        // backgroundColor: '#00f'
     },
     inputLogin: {
         width: "85%",
