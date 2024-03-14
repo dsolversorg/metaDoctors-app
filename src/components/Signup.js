@@ -225,7 +225,7 @@ const Signup = () => {
                         </View>
 
                         <View style={styles.contInp}>
-                            <Text style={styles.label}>uf</Text>
+                            <Text style={styles.label}>UF</Text>
                             <Picker
                                 style={styles.pickerite}
                                 selectedValue={uf}
@@ -279,7 +279,7 @@ const Signup = () => {
                                     <TextInput
                                         style={styles.inputLogin}
                                         placeholder="Nome"
-                                        placeholderTextColor="#fff"
+                                        placeholderTextColor="#000"
                                         keyboardType="default"
                                         onChangeText={(name) => { setName(name) }}
                                     />
@@ -309,7 +309,7 @@ const Signup = () => {
                                     <TextInput
                                         style={styles.inputLogin}
                                         placeholder="Nome"
-                                        placeholderTextColor="#fff"
+                                        placeholderTextColor="#000"
                                         keyboardType="default"
                                         onChangeText={(name) => { setName(name) }}
                                     />
@@ -319,14 +319,14 @@ const Signup = () => {
                         <View style={styles.contCheck}>
                             <Switch
                                 trackColor={{ false: '#767577', true: '#81b0ff' }}
-                                thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
+                                thumbColor={isEnabled ? '#0000FF' : '#f4f3f4'}
                                 ios_backgroundColor="#3e3e3e"
                                 onValueChange={toggleSwitch}
                                 value={isEnabled}
                                 style={styles.checkBox}
                             />
                             <TouchableOpacity onPress={ModalVisible}>
-                                <Text><Text style={[styles.text, styles.bold]}>aceito os</Text>termos de serviços</Text>
+                                <Text style={styles.textServices}><Text style={[styles.textServices, styles.bold]}>aceito os </Text>termos de serviços</Text>
                             </TouchableOpacity>
                             <CustomModal modalVisible={modalVisible} setModalVisible={ModalVisible} />
                         </View>
@@ -342,6 +342,9 @@ const Signup = () => {
 }
 
 const styles = StyleSheet.create({
+    textServices:{
+        color: '#000',
+    },
     testImg: {
         height: 200,
         width: 200,
@@ -366,7 +369,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         fontSize: 40,
-        color: '#fff',
+        color: '#000',
         marginBottom: 40,
     },
     cont: {
@@ -393,15 +396,16 @@ const styles = StyleSheet.create({
         fontSize: 18,
         marginBottom: 10,
         borderRadius: 10,
-        backgroundColor: 'rgba(12,12,12,0.34)',
+        backgroundColor: '#D0CFF4',
         padding: 10,
     },
     label: {
         width: '85%',
         alignItems: 'flex-start',
+        // fontWeight:500,
         fontSize: 20,
         marginBottom: 5,
-        color: '#fff',
+        color: '#000',
     },
     btnLoginText: {
         fontSize: 17,
@@ -443,12 +447,13 @@ const styles = StyleSheet.create({
         fontSize: 17,
         fontStyle: 'normal',
         fontWeight: 'bold',
-        color: '#fff',
+        color: '#000',
         letterSpacing: 1,
         textTransform: 'uppercase',
     },
     pickerite: {
         width: "85%",
+        borderRadius:9
     },
     bold: {
         fontWeight: 'bold',
