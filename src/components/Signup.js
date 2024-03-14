@@ -2,9 +2,11 @@ import React, { useState, useEffect, useRef } from "react";
 import { StyleSheet, View, Image, TextInput, TouchableOpacity, Text, ScrollView, Switch } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { Picker } from '@react-native-picker/picker';
-import { specialties, UF } from '../constants/constants';
+import { specialties, UF, fonte } from '../constants/constants';
 import api from "../services/api";
 import crmApi from "../services/crmApi";
+import CustomModal from "./CustomModal";
+// import { Modalize, useModalize } from 'react-native-modalize';
 
 const Signup = () => {
     const [email, setEmail] = useState('');
@@ -17,9 +19,13 @@ const Signup = () => {
     const [uf, setUf] = useState('');
     const [specialty, setSpecialty] = useState('');
     const [typeUser, setTypeUser] = useState('');
+    const colores = ['#E8B4F3', '#DFDEEF', '#DFDEEF', '#E8B4F3'];
 
     const [isEnabled, setIsEnabled] = useState(false);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+
+    const [modalVisible, setModalVisible] = useState(false);
+
 
     const [emailError, setEmailError] = useState(false);
     const [senhaError, setSenhaError] = useState(false);
@@ -35,8 +41,15 @@ const Signup = () => {
     const token = '1112d5aa-5586-4a4d-8413-08c2257e5989';
 
     const scrollViewRef = useRef(null);
+    // const { largura } = useWindowDimensions();
+    // const modalizeRef = useRef < Modalize > (null);
 
-
+    // function onOpen() {
+    //     modalizeRef.current?.open();
+    // };
+    const ModalVisible = () => {
+        setModalVisible(!modalVisible)
+    }
 
     // Função para formatar o número de telefone
     const formatPhoneNumber = (input) => {
@@ -115,7 +128,7 @@ const Signup = () => {
             }
         } catch (error) {
             console.error('Erro na requisição:', error);
-    
+
             if (error.response.status === 400) {
                 console.log('Erro 400 - Bad Request:', error);
                 console.log('aaaaa: ', error.response.data.message.signup_email);
@@ -127,7 +140,7 @@ const Signup = () => {
             } else {
                 console.error('Erro não tratado:', error);
             }
-        }   
+        }
     }
 
 
@@ -136,7 +149,7 @@ const Signup = () => {
     // }, [])
 
     return (
-        <LinearGradient colors={['#5025F1', '#E500F7',]} style={styles.gradient}>
+        <LinearGradient colors={colores} style={styles.gradient}>
             <View style={styles.container}>
                 <ScrollView style={styles.scrollViewContent} ref={scrollViewRef}>
                     <View style={styles.cont}>
@@ -171,7 +184,7 @@ const Signup = () => {
 
                         <View style={styles.contInp}>
                             {nameUserError && nameUser === '' ? <Text style={styles.errorText}>{errorText}</Text> : null}
-                            {errorTextUser? <Text style={styles.errorText}>{errorTextUser}</Text> : null}
+                            {errorTextUser ? <Text style={styles.errorText}>{errorTextUser}</Text> : null}
                             <Text style={styles.label}>Nome de Usuario</Text>
                             <TextInput
                                 style={styles.inputLogin}
@@ -312,7 +325,10 @@ const Signup = () => {
                                 value={isEnabled}
                                 style={styles.checkBox}
                             />
-                            <Text>aceito os termos de serviços</Text>
+                            <TouchableOpacity onPress={ModalVisible}>
+                                <Text><Text style={[styles.text, styles.bold]}>aceito os</Text>termos de serviços</Text>
+                            </TouchableOpacity>
+                            <CustomModal modalVisible={modalVisible} setModalVisible={ModalVisible} />
                         </View>
 
                         <TouchableOpacity style={styles.btnLogin} onPress={signup}>
@@ -409,9 +425,35 @@ const styles = StyleSheet.create({
         width: "85%",
         height: 40,
     },
+    btn: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        // width: 130,
+        backgroundColor: '#3632D6',
+        borderColor: '#3632D6',
+        borderWidth: 5,
+        // marginBottom: 50,
+        marginTop: 25,
+        padding: 10,
+        borderRadius: 9,
+        shadowOffset: { height: 1, width: 1 },
+        // width: "85%",
+    },
+    btnText: {
+        fontSize: 17,
+        fontStyle: 'normal',
+        fontWeight: 'bold',
+        color: '#fff',
+        letterSpacing: 1,
+        textTransform: 'uppercase',
+    },
     pickerite: {
         width: "85%",
     },
+    bold: {
+        fontWeight: 'bold',
+    },
+
 });
 
 export default Signup;

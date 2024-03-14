@@ -71,3 +71,20 @@ export const UF = [
     "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC",
     "SE", "SP", "TO"
 ];
+
+export const fonte = {
+    html: ` <ol style="list-style-type: superior-roman; cor: azul; peso da fonte: negrito;"> 
+    <li>E-mail</li>
+    <li>Senha</li>
+    <li>Nome do Usuário</li>
+    <li>Celular</li>
+    <li>CRM (opcional)</li>
+    <li>Nome Completo</li>
+    <li>Data de Nascimento (Dia, Mês, Ano)</li>
+    <li>Especialidade(s) Médica</li>
+    <li>CEP (opcional)</li>
+    <li>Endereço (opcional), incluindo Número, Bairro, Complemento, Cidade e Estado</li>
+    <li>Atividade de registro, login, navegação por páginas na plataforma, consumo de conteúdos, bem como informações compartilhadas em fóruns, mensagens abertas ou privadas;
+    Eventualmente podemos coletar de forma opcional endereços de perfis de redes sociais.</li>
+  </ol> `
+};
