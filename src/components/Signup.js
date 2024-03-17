@@ -153,6 +153,9 @@ const Signup = () => {
             <View style={styles.container}>
                 <ScrollView style={styles.scrollViewContent} ref={scrollViewRef}>
                     <View style={styles.cont}>
+                        <View style={styles.viewimg}>
+                            <Image style={styles.LogoMd} source={require('../../assets/Login_Logo.png')} />
+                        </View>
                         <Text style={styles.header}>Cadastro</Text>
                         <View style={styles.contInp}>
                             {emailError && email === '' ? <Text style={styles.errorText}>{errorText}</Text> : null}
@@ -342,7 +345,7 @@ const Signup = () => {
 }
 
 const styles = StyleSheet.create({
-    textServices:{
+    textServices: {
         color: '#000',
     },
     testImg: {
@@ -453,11 +456,24 @@ const styles = StyleSheet.create({
     },
     pickerite: {
         width: "85%",
-        borderRadius:9
+        borderRadius: 9
     },
     bold: {
         fontWeight: 'bold',
     },
+    viewimg: {
+        //backgroundColor: '#FFF',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    LogoMd: {
+        //position: 'absolute',
+        top: 40,
+        //right: 10,
+        height: 111,
+        width: 99,
+      },
+
 
 });
 
