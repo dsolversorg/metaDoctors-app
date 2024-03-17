@@ -19,7 +19,7 @@ const Signup = () => {
     const [uf, setUf] = useState('');
     const [specialty, setSpecialty] = useState('');
     const [typeUser, setTypeUser] = useState('');
-    const colores = ['#E8B4F3', '#DFDEEF', '#DFDEEF', '#E8B4F3'];
+    const colores = ['#E5B0F2', '#E1E0EF', '#E5B0F2'];
 
     const [isEnabled, setIsEnabled] = useState(false);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
@@ -149,7 +149,12 @@ const Signup = () => {
     // }, [])
 
     return (
-        <LinearGradient colors={colores} style={styles.gradient}>
+        <LinearGradient
+            colors={colores}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            locations={[0, 0.5, 1.0]}
+            style={styles.gradient}>
             <View style={styles.container}>
                 <ScrollView style={styles.scrollViewContent} ref={scrollViewRef}>
                     <View style={styles.cont}>
@@ -164,7 +169,7 @@ const Signup = () => {
                             <TextInput
                                 style={styles.inputLogin}
                                 placeholder="Insira seu E-mail"
-                                placeholderTextColor="#ffffff4d"
+                                placeholderTextColor="#464554"
                                 keyboardType="email-address"
                                 onChangeText={(email) => { setEmail(email) }}
                                 onBlur={() => errorFillIn(email, setEmailError)}
@@ -177,7 +182,7 @@ const Signup = () => {
                             <TextInput
                                 style={styles.inputLogin}
                                 placeholder="Insira sua Senha"
-                                placeholderTextColor="#ffffff4d"
+                                placeholderTextColor="#464554"
                                 keyboardType="default"
                                 secureTextEntry={true}
                                 onChangeText={(senha) => { setSenha(senha) }}
@@ -192,7 +197,7 @@ const Signup = () => {
                             <TextInput
                                 style={styles.inputLogin}
                                 placeholder="Insira seu Nome de Usuario"
-                                placeholderTextColor="#ffffff4d"
+                                placeholderTextColor="#464554"
                                 keyboardType="default"
                                 onChangeText={(nameUser) => { setNameUser(nameUser) }}
                                 onBlur={() => errorFillIn(nameUser, setNameUserError)}
@@ -205,7 +210,7 @@ const Signup = () => {
                             <TextInput
                                 style={styles.inputLogin}
                                 placeholder="Insira seu número de Celular"
-                                placeholderTextColor="#ffffff4d"
+                                placeholderTextColor="#464554"
                                 keyboardType="phone-pad"
                                 value={telephone}
                                 onChangeText={(text) => formatPhoneNumber(text)}
@@ -219,7 +224,7 @@ const Signup = () => {
                             <TextInput
                                 style={styles.inputLogin}
                                 placeholder="Insira seu CPF"
-                                placeholderTextColor="#ffffff4d"
+                                placeholderTextColor="#464554"
                                 keyboardType="numeric"
                                 value={cpf}
                                 onChangeText={(text) => formatCPF(text)}
@@ -240,7 +245,7 @@ const Signup = () => {
                                         key={index}
                                         label={states}
                                         value={states}
-                                        style={styles.inputLogin}
+                                        style={styles.picker}
                                     />
                                 ))}
                             </Picker>
@@ -256,10 +261,10 @@ const Signup = () => {
                                 onValueChange={(itemValue, itemIndex) =>
                                     setTypeUser(itemValue)
                                 }>
-                                <Picker.Item style={styles.inputLogin} label="O que você é?" value="" />
-                                <Picker.Item style={styles.inputLogin} label="Eu sou Estudante" value="Estudante" />
-                                <Picker.Item style={styles.inputLogin} label="Eu sou Médico(a)" value="Medico" />
-                                <Picker.Item style={styles.inputLogin} label="Eu sou Residente" value="Residente" />
+                                <Picker.Item style={styles.picker} label="O que você é?" value="" />
+                                <Picker.Item style={styles.picker} label="Eu sou Estudante" value="Estudante" />
+                                <Picker.Item style={styles.picker} label="Eu sou Médico(a)" value="Medico" />
+                                <Picker.Item style={styles.picker} label="Eu sou Residente" value="Residente" />
                             </Picker>
                         </View>
 
@@ -271,7 +276,7 @@ const Signup = () => {
                                     <TextInput
                                         style={styles.inputLogin}
                                         placeholder="CRM - ele vai ter uma validação"
-                                        placeholderTextColor="#fff"
+                                        placeholderTextColor="#464554"
                                         keyboardType="numeric"
                                         onChangeText={(crm) => { setCrm(crm) }}
                                         onBlur={validateCrm}
@@ -282,7 +287,7 @@ const Signup = () => {
                                     <TextInput
                                         style={styles.inputLogin}
                                         placeholder="Nome"
-                                        placeholderTextColor="#000"
+                                        placeholderTextColor="#464554"
                                         keyboardType="default"
                                         onChangeText={(name) => { setName(name) }}
                                     />
@@ -300,7 +305,7 @@ const Signup = () => {
                                                 key={index}
                                                 label={specialties}
                                                 value={specialties}
-                                                style={styles.inputLogin}
+                                                style={styles.picker}
                                             />
                                         ))}
                                     </Picker>
@@ -312,7 +317,7 @@ const Signup = () => {
                                     <TextInput
                                         style={styles.inputLogin}
                                         placeholder="Nome"
-                                        placeholderTextColor="#000"
+                                        placeholderTextColor="#464554"
                                         keyboardType="default"
                                         onChangeText={(name) => { setName(name) }}
                                     />
@@ -335,7 +340,14 @@ const Signup = () => {
                         </View>
 
                         <TouchableOpacity style={styles.btnLogin} onPress={signup}>
-                            <Text style={styles.btnLoginText}>Criar conta</Text>
+                            <LinearGradient
+                                start={{ x: 0, y: 0 }}
+                                end={{ x: 1, y: 1 }}
+                                colors={['#F606F8', '#635EFF', '#0706FF']}
+                                style={styles.gradientBTN}
+                            >
+                                <Text style={styles.btnLoginText}>Criar conta</Text>
+                            </LinearGradient>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>
@@ -399,7 +411,16 @@ const styles = StyleSheet.create({
         fontSize: 18,
         marginBottom: 10,
         borderRadius: 10,
-        backgroundColor: '#D0CFF4',
+        backgroundColor: '#CFCCF3',
+        padding: 10,
+    },
+    picker: {
+        width: "85%",
+        fontSize: 18,
+        marginBottom: 10,
+        borderRadius: 10,
+        backgroundColor: '#ABA6F7',
+        color: '#000',
         padding: 10,
     },
     label: {
@@ -414,23 +435,24 @@ const styles = StyleSheet.create({
         fontSize: 17,
         fontStyle: 'normal',
         fontWeight: 'bold',
-        color: '#3632D6',
+        color: '#fff',
         letterSpacing: 1,
         textTransform: 'uppercase',
+    },
+    gradientBTN:{
+        paddingVertical: 10,
+        paddingHorizontal: 100,
+        borderRadius: 9,
     },
     btnLogin: {
         alignItems: 'center',
         justifyContent: 'center',
-        width: 130,
-        backgroundColor: '#fff',
-        borderColor: '#fff',
-        borderWidth: 5,
         marginBottom: 50,
         marginTop: 25,
         borderRadius: 9,
+        padding: 10,
         shadowOffset: { height: 1, width: 1 },
         width: "85%",
-        height: 40,
     },
     btn: {
         alignItems: 'center',
@@ -447,7 +469,7 @@ const styles = StyleSheet.create({
         // width: "85%",
     },
     btnText: {
-        fontSize: 17,
+        fontSize: 18,
         fontStyle: 'normal',
         fontWeight: 'bold',
         color: '#000',
