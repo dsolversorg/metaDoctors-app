@@ -159,7 +159,7 @@ const Signup = () => {
                 <ScrollView style={styles.scrollViewContent} ref={scrollViewRef}>
                     <View style={styles.cont}>
                         <View style={styles.viewimg}>
-                            <Image style={styles.LogoMd} source={require('../../assets/Login_Logo.png')} />
+                            <Image style={styles.LogoMd} source={require('../assets/login_logo.png')} />
                         </View>
                         <Text style={styles.header}>Cadastro</Text>
                         <View style={styles.contInp}>
@@ -234,38 +234,47 @@ const Signup = () => {
 
                         <View style={styles.contInp}>
                             <Text style={styles.label}>UF</Text>
-                            <Picker
-                                style={styles.pickerite}
-                                selectedValue={uf}
-                                onValueChange={(itemValue, itemIndex) =>
-                                    setUf(itemValue)
-                                }>
-                                {UF.map((states, index) => (
-                                    <Picker.Item
-                                        key={index}
-                                        label={states}
-                                        value={states}
-                                        style={styles.picker}
-                                    />
-                                ))}
-                            </Picker>
+                            <View style={styles.pickerContainer}>
+                                <Picker
+                                    style={styles.pickerite}
+                                    selectedValue={uf}
+                                    onValueChange={(itemValue, itemIndex) =>
+                                        setUf(itemValue)
+                                    }
+                                    dropdownIconColor="#000"
+                                    mode="dropdown" >
+                                    {UF.map((states, index) => (
+                                        <Picker.Item
+                                            key={index}
+                                            label={states}
+                                            value={states}
+                                            style={styles.picker}
+                                        />
+                                    ))}
+                                </Picker>
+                            </View>
                         </View>
 
                         <View style={styles.contInp}>
                             {TypeError && typeUser === "" ? <Text style={styles.errorText}>{errorText}</Text> : null}
                             <Text style={styles.label}>Tipo de usuário</Text>
-                            <Picker
-                                onBlur={() => errorFillIn(typeUser, setTypeError)}
-                                style={styles.pickerite}
-                                selectedValue={typeUser}
-                                onValueChange={(itemValue, itemIndex) =>
-                                    setTypeUser(itemValue)
-                                }>
-                                <Picker.Item style={styles.picker} label="O que você é?" value="" />
-                                <Picker.Item style={styles.picker} label="Eu sou Estudante" value="Estudante" />
-                                <Picker.Item style={styles.picker} label="Eu sou Médico(a)" value="Medico" />
-                                <Picker.Item style={styles.picker} label="Eu sou Residente" value="Residente" />
-                            </Picker>
+                            <View style={styles.pickerContainer}>
+                                <Picker
+                                    onBlur={() => errorFillIn(typeUser, setTypeError)}
+                                    style={styles.pickerite}
+                                    selectedValue={typeUser}
+                                    onValueChange={(itemValue, itemIndex) =>
+                                        setTypeUser(itemValue)
+                                    }
+                                    dropdownIconColor="#000" // Define a cor da seta para preto
+                                    mode="dropdown" // Define o modo de exibição do Picker como dropdown
+                                >
+                                    <Picker.Item style={styles.picker} label="O que você é?" value="" />
+                                    <Picker.Item style={styles.picker} label="Eu sou Estudante" value="Estudante" />
+                                    <Picker.Item style={styles.picker} label="Eu sou Médico(a)" value="Medico" />
+                                    <Picker.Item style={styles.picker} label="Eu sou Residente" value="Residente" />
+                                </Picker>
+                            </View>
                         </View>
 
                         {typeUser === 'Medico' || typeUser === 'Residente' ?
@@ -275,7 +284,7 @@ const Signup = () => {
                                     <Text style={styles.label}>CRM</Text>
                                     <TextInput
                                         style={styles.inputLogin}
-                                        placeholder="CRM - ele vai ter uma validação"
+                                        placeholder="CRM"
                                         placeholderTextColor="#464554"
                                         keyboardType="numeric"
                                         onChangeText={(crm) => { setCrm(crm) }}
@@ -294,21 +303,25 @@ const Signup = () => {
                                 </View>
                                 <View style={styles.contInp}>
                                     <Text style={styles.label}>Especialidade</Text>
-                                    <Picker
-                                        style={styles.pickerite}
-                                        selectedValue={specialty}
-                                        onValueChange={(itemValue, itemIndex) =>
-                                            setSpecialty(itemValue)
-                                        }>
-                                        {specialties.map((specialties, index) => (
-                                            <Picker.Item
-                                                key={index}
-                                                label={specialties}
-                                                value={specialties}
-                                                style={styles.picker}
-                                            />
-                                        ))}
-                                    </Picker>
+                                    <View style={styles.pickerContainer}>
+                                        <Picker
+                                            style={styles.pickerite}
+                                            selectedValue={specialty}
+                                            onValueChange={(itemValue, itemIndex) =>
+                                                setSpecialty(itemValue)
+                                            }
+                                            dropdownIconColor="#000"
+                                            mode="dropdown">
+                                            {specialties.map((specialties, index) => (
+                                                <Picker.Item
+                                                    key={index}
+                                                    label={specialties}
+                                                    value={specialties}
+                                                    style={styles.picker}
+                                                />
+                                            ))}
+                                        </Picker>
+                                    </View>
                                 </View>
                             </>
                             : typeUser === 'Estudante' ?
@@ -334,7 +347,7 @@ const Signup = () => {
                                 style={styles.checkBox}
                             />
                             <TouchableOpacity onPress={ModalVisible}>
-                                <Text style={styles.textServices}><Text style={[styles.textServices, styles.bold]}>aceito os </Text>termos de serviços</Text>
+                                <Text style={styles.textServices}><Text style={[styles.textServices, styles.bold]}>Aceito os </Text>termos de serviços</Text>
                             </TouchableOpacity>
                             <CustomModal modalVisible={modalVisible} setModalVisible={ModalVisible} />
                         </View>
@@ -351,8 +364,8 @@ const Signup = () => {
                         </TouchableOpacity>
                     </View>
                 </ScrollView>
-            </View>
-        </LinearGradient>
+            </View >
+        </LinearGradient >
     )
 }
 
@@ -439,7 +452,7 @@ const styles = StyleSheet.create({
         letterSpacing: 1,
         textTransform: 'uppercase',
     },
-    gradientBTN:{
+    gradientBTN: {
         paddingVertical: 10,
         paddingHorizontal: 100,
         borderRadius: 9,
@@ -452,7 +465,7 @@ const styles = StyleSheet.create({
         borderRadius: 9,
         padding: 10,
         shadowOffset: { height: 1, width: 1 },
-        width: "85%",
+        width: "90%",
     },
     btn: {
         alignItems: 'center',
@@ -476,26 +489,31 @@ const styles = StyleSheet.create({
         letterSpacing: 1,
         textTransform: 'uppercase',
     },
-    pickerite: {
+    pickerContainer: {
         width: "85%",
-        borderRadius: 9
+        borderRadius: 10,
+        backgroundColor: '#ABA6F7',
+        marginBottom: 10, 
+        paddingHorizontal: 0,
+        overflow: 'hidden', 
+    },
+    pickerite: {
+        width: "100%",
     },
     bold: {
         fontWeight: 'bold',
     },
     viewimg: {
-        //backgroundColor: '#FFF',
+        //backgroundColor: 'green',
+        bottom: 25,
         alignItems: 'center',
         justifyContent: 'center',
     },
     LogoMd: {
-        //position: 'absolute',
-        top: 40,
-        //right: 10,
-        height: 111,
-        width: 99,
-      },
-
+        backgroundColor: "#0000",
+        height: 150,
+        width: 200,
+    },
 
 });
 
