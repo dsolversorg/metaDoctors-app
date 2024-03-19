@@ -6,9 +6,13 @@ import { specialties, UF, fonte } from '../constants/constants';
 import api from "../services/api";
 import crmApi from "../services/crmApi";
 import CustomModal from "./CustomModal";
+import VerifyCode from "./VerifyCode";
+import { useNavigation } from "@react-navigation/native";
 // import { Modalize, useModalize } from 'react-native-modalize';
 
-const Signup = () => {
+const Signup = (proops) => {
+    const navigation = useNavigation()
+
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
     const [telephone, setTelephone] = useState('');
@@ -124,6 +128,7 @@ const Signup = () => {
 
             if (response.status === 200) {
                 console.log('Sucesso!');
+                navigation.navigate('CodeVerificationScreen', {user_email: email, user_nicename: nameUser});
 
             }
         } catch (error) {
@@ -339,7 +344,7 @@ const Signup = () => {
 
                         <View style={styles.contCheck}>
                             <Switch
-                                trackColor={{ false: '#767577', true: '#81b0ff' }}
+                                trackColor={{ false: '#767577', true: '#BB80CF' }}
                                 thumbColor={isEnabled ? '#0000FF' : '#f4f3f4'}
                                 ios_backgroundColor="#3e3e3e"
                                 onValueChange={toggleSwitch}
