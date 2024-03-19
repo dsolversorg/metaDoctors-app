@@ -8,6 +8,7 @@ import crmApi from "../services/crmApi";
 import CustomModal from "./CustomModal";
 import VerifyCode from "./VerifyCode";
 import { useNavigation } from "@react-navigation/native";
+
 // import { Modalize, useModalize } from 'react-native-modalize';
 
 const Signup = (proops) => {
@@ -128,7 +129,7 @@ const Signup = (proops) => {
 
             if (response.status === 200) {
                 console.log('Sucesso!');
-                navigation.navigate('CodeVerificationScreen', {user_email: email, user_nicename: nameUser});
+                navigation.navigate('CodeVerificationScreen', {username: nameUser, email: email});
 
             }
         } catch (error) {
