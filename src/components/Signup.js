@@ -33,6 +33,7 @@ const Signup = (proops) => {
 
 
     const [emailError, setEmailError] = useState(false);
+    const [crmError, setCrmError] = useState(false);
     const [senhaError, setSenhaError] = useState(false);
     const [telephoneError, setTelephoneError] = useState(false);
     const [cpfError, setCpfError] = useState(false);
@@ -97,8 +98,9 @@ const Signup = (proops) => {
             if (response.status === 200) {
                 const responseData = JSON.parse(response.request._response);
                 setDoctorName(responseData.dadosMedico.nome);
-                setName(doctorName)
+                setName(responseData.dadosMedico.nome)
                 console.log(doctorName);
+                setErrorTextCrm('')
             } else if (response.status === 204) {
                 setErrorTextCrm('Crm Invalido!')
             }
@@ -326,14 +328,15 @@ const Signup = (proops) => {
                             <>
                                 <View style={styles.contInp}>
                                     <Text style={styles.label_title}>CRM</Text>
-                                    {crm ?
+                                    {crmError || errorTextCrm ?
                                         <TextInput
                                             style={styles.inputLoginError}
                                             placeholder="insira seu CRM"
                                             placeholderTextColor="#464554"
                                             keyboardType="numeric"
                                             onChangeText={(crm) => { setCrm(crm) }}
-                                            onBlur={validateCrm}
+                                            onBlur={() => errorFillIn(crm, setCrmError)}
+                                            onEndEditing={validateCrm}
                                         /> :
                                         <TextInput
                                             style={styles.inputLogin}
@@ -341,14 +344,17 @@ const Signup = (proops) => {
                                             placeholderTextColor="#464554"
                                             keyboardType="numeric"
                                             onChangeText={(crm) => { setCrm(crm) }}
-                                            onBlur={validateCrm}
+                                            onBlur={() => errorFillIn(crm, setCrmError)}
+                                            onEndEditing={validateCrm}
                                         />}
-                                    {crm !== "" ? <Text style={styles.errorText}>{errorTextCrm}</Text> : null}
+                                    {crmError && crm === "" ? <Text style={styles.errorText}>{errorText}</Text> : null}
+                                    {errorTextCrm ? <Text style={styles.errorText}>{errorTextCrm}</Text> : null}
                                 </View>
                                 <View style={styles.contInp}>
                                     <Text style={styles.label}>Nome</Text>
                                     <TextInput
                                         style={styles.inputLogin}
+                                        value={name}
                                         placeholder="insira seu nome"
                                         placeholderTextColor="#464554"
                                         keyboardType="default"
@@ -401,7 +407,7 @@ const Signup = (proops) => {
                                 style={styles.checkBox}
                             />
                             <TouchableOpacity onPress={ModalVisible}>
-                                <Text style={styles.textServices}>Concordo com os <Text style={[styles.textServices, styles.bold]}>Termos e serviços</Text> e <Text style={[styles.textServices, styles.bold]}>Política de Privacidade.</Text></Text>
+                                <Text style={[styles.textServices, styles.contTextServices]}>Concordo com os <Text style={[styles.textServices, styles.bold]}>Termos e serviços</Text> e <Text style={[styles.textServices, styles.bold]}>Política de Privacidade.</Text></Text>
                             </TouchableOpacity>
 
                             <CustomModal modalVisible={modalVisible} setModalVisible={ModalVisible} />
@@ -483,7 +489,7 @@ const styles = StyleSheet.create({
         marginBottom: 10
     },
     contCheck: {
-        width: '100%',
+        width: '85%',
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'column',
@@ -491,6 +497,13 @@ const styles = StyleSheet.create({
     },
     textServices: {
         color: '#000',
+    },
+    contTextServices: {
+        width: '75%',
+        // backgroundColor: 'red',
+        alignItems: 'center',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     inputLogin: {
         width: "85%",
