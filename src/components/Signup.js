@@ -129,7 +129,7 @@ const Signup = (proops) => {
 
             if (response.status === 200) {
                 console.log('Sucesso!');
-                navigation.navigate('CodeVerificationScreen', {username: nameUser, email: email});
+                navigation.navigate('CodeVerificationScreen', { username: nameUser, email: email });
 
             }
         } catch (error) {
@@ -169,77 +169,116 @@ const Signup = (proops) => {
                         </View>
                         <Text style={styles.header}>Cadastro</Text>
                         <View style={styles.contInp}>
-                            {emailError && email === '' ? <Text style={styles.errorText}>{errorText}</Text> : null}
-                            {errorTextEmail ? <Text style={styles.errorText}>{errorTextEmail}</Text> : null}
-                            <Text style={styles.label}>E-mail</Text>
-                            <TextInput
-                                style={styles.inputLogin}
+                            <Text style={styles.label_title}>E-mail</Text>
+                            {emailError || errorTextEmail ? <TextInput
+                                style={styles.inputLoginError}
                                 placeholder="Insira seu E-mail"
                                 placeholderTextColor="#464554"
                                 keyboardType="email-address"
                                 onChangeText={(email) => { setEmail(email) }}
                                 onBlur={() => errorFillIn(email, setEmailError)}
-                            />
+                            /> :
+                                <TextInput
+                                    style={styles.inputLogin}
+                                    placeholder="Insira seu E-mail"
+                                    placeholderTextColor="#464554"
+                                    keyboardType="email-address"
+                                    onChangeText={(email) => { setEmail(email) }}
+                                    onBlur={() => errorFillIn(email, setEmailError)}
+                                />}
+                            {emailError && email === '' ? <Text style={styles.errorText}>{errorText}</Text> : null}
+                            {errorTextEmail ? <Text style={styles.errorText}>{errorTextEmail}</Text> : null}
                         </View>
 
                         <View style={styles.contInp}>
-                            {senhaError && senha === '' ? <Text style={styles.errorText}>{errorText}</Text> : null}
-                            <Text style={styles.label}>Senha</Text>
+                            <Text style={styles.label_title}>Senha</Text>
                             <TextInput
                                 style={styles.inputLogin}
-                                placeholder="Insira sua Senha"
+                                placeholder="Insira sua senha"
                                 placeholderTextColor="#464554"
                                 keyboardType="default"
                                 secureTextEntry={true}
                                 onChangeText={(senha) => { setSenha(senha) }}
                                 onBlur={() => errorFillIn(senha, setSenhaError)}
                             />
+                            {senhaError && senha === '' ? <Text style={styles.errorText}>{errorText}</Text> : null}
                         </View>
 
                         <View style={styles.contInp}>
+                            <Text style={styles.label_title}>Nome de usuário</Text>
+                            {nameUserError || errorTextUser ?
+                                <TextInput
+                                    style={styles.inputLoginError}
+                                    placeholder="Insira seu nome de usuário"
+                                    placeholderTextColor="#464554"
+                                    keyboardType="default"
+                                    onChangeText={(nameUser) => { setNameUser(nameUser) }}
+                                    onBlur={() => errorFillIn(nameUser, setNameUserError)}
+                                />
+                                :
+                                <TextInput
+                                    style={styles.inputLogin}
+                                    placeholder="Insira seu nome de usuário"
+                                    placeholderTextColor="#464554"
+                                    keyboardType="default"
+                                    onChangeText={(nameUser) => { setNameUser(nameUser) }}
+                                    onBlur={() => errorFillIn(nameUser, setNameUserError)}
+                                />
+                            }
                             {nameUserError && nameUser === '' ? <Text style={styles.errorText}>{errorText}</Text> : null}
                             {errorTextUser ? <Text style={styles.errorText}>{errorTextUser}</Text> : null}
-                            <Text style={styles.label}>Nome de Usuario</Text>
-                            <TextInput
-                                style={styles.inputLogin}
-                                placeholder="Insira seu Nome de Usuario"
-                                placeholderTextColor="#464554"
-                                keyboardType="default"
-                                onChangeText={(nameUser) => { setNameUser(nameUser) }}
-                                onBlur={() => errorFillIn(nameUser, setNameUserError)}
-                            />
                         </View>
 
                         <View style={styles.contInp}>
+                            <Text style={styles.label_title}>Telefone</Text>
+                            {telephoneError ?
+                                <TextInput
+                                    style={styles.inputLoginError}
+                                    placeholder="Insira seu número de Celular"
+                                    placeholderTextColor="#464554"
+                                    keyboardType="phone-pad"
+                                    value={telephone}
+                                    onChangeText={(text) => formatPhoneNumber(text)}
+                                    onBlur={() => errorFillIn(telephone, setTelephoneError)}
+                                /> :
+                                <TextInput
+                                    style={styles.inputLogin}
+                                    placeholder="Insira seu número de Celular"
+                                    placeholderTextColor="#464554"
+                                    keyboardType="phone-pad"
+                                    value={telephone}
+                                    onChangeText={(text) => formatPhoneNumber(text)}
+                                    onBlur={() => errorFillIn(telephone, setTelephoneError)}
+                                />}
                             {telephoneError && telephone === '' ? <Text style={styles.errorText}>{errorText}</Text> : null}
-                            <Text style={styles.label}>Telefone</Text>
-                            <TextInput
-                                style={styles.inputLogin}
-                                placeholder="Insira seu número de Celular"
-                                placeholderTextColor="#464554"
-                                keyboardType="phone-pad"
-                                value={telephone}
-                                onChangeText={(text) => formatPhoneNumber(text)}
-                                onBlur={() => errorFillIn(telephone, setTelephoneError)}
-                            />
                         </View>
 
                         <View style={styles.contInp}>
+                            <Text style={styles.label_title}>CPF</Text>
+                            {cpfError ?
+                                <TextInput
+                                    style={styles.inputLoginError}
+                                    placeholder="Insira seu CPF"
+                                    placeholderTextColor="#464554"
+                                    keyboardType="numeric"
+                                    value={cpf}
+                                    onChangeText={(text) => formatCPF(text)}
+                                    onBlur={() => errorFillIn(cpf, setCpfError)}
+                                /> :
+                                <TextInput
+                                    style={styles.inputLogin}
+                                    placeholder="Insira seu CPF"
+                                    placeholderTextColor="#464554"
+                                    keyboardType="numeric"
+                                    value={cpf}
+                                    onChangeText={(text) => formatCPF(text)}
+                                    onBlur={() => errorFillIn(cpf, setCpfError)}
+                                />}
                             {cpfError && cpf === '' ? <Text style={styles.errorText}>{errorText}</Text> : null}
-                            <Text style={styles.label}>CPF</Text>
-                            <TextInput
-                                style={styles.inputLogin}
-                                placeholder="Insira seu CPF"
-                                placeholderTextColor="#464554"
-                                keyboardType="numeric"
-                                value={cpf}
-                                onChangeText={(text) => formatCPF(text)}
-                                onBlur={() => errorFillIn(cpf, setCpfError)}
-                            />
                         </View>
 
                         <View style={styles.contInp}>
-                            <Text style={styles.label}>UF</Text>
+                            <Text style={styles.label_title}>UF</Text>
                             <View style={styles.pickerContainer}>
                                 <Picker
                                     style={styles.pickerite}
@@ -262,8 +301,7 @@ const Signup = (proops) => {
                         </View>
 
                         <View style={styles.contInp}>
-                            {TypeError && typeUser === "" ? <Text style={styles.errorText}>{errorText}</Text> : null}
-                            <Text style={styles.label}>Tipo de usuário</Text>
+                            <Text style={styles.label_title}>Tipo de usuário</Text>
                             <View style={styles.pickerContainer}>
                                 <Picker
                                     onBlur={() => errorFillIn(typeUser, setTypeError)}
@@ -281,34 +319,44 @@ const Signup = (proops) => {
                                     <Picker.Item style={styles.picker} label="Eu sou Residente" value="Residente" />
                                 </Picker>
                             </View>
+                            {TypeError && typeUser === "" ? <Text style={styles.errorText}>{errorText}</Text> : null}
                         </View>
 
                         {typeUser === 'Medico' || typeUser === 'Residente' ?
                             <>
                                 <View style={styles.contInp}>
+                                    <Text style={styles.label_title}>CRM</Text>
+                                    {crm ?
+                                        <TextInput
+                                            style={styles.inputLoginError}
+                                            placeholder="insira seu CRM"
+                                            placeholderTextColor="#464554"
+                                            keyboardType="numeric"
+                                            onChangeText={(crm) => { setCrm(crm) }}
+                                            onBlur={validateCrm}
+                                        /> :
+                                        <TextInput
+                                            style={styles.inputLogin}
+                                            placeholder="insira seu CRM"
+                                            placeholderTextColor="#464554"
+                                            keyboardType="numeric"
+                                            onChangeText={(crm) => { setCrm(crm) }}
+                                            onBlur={validateCrm}
+                                        />}
                                     {crm !== "" ? <Text style={styles.errorText}>{errorTextCrm}</Text> : null}
-                                    <Text style={styles.label}>CRM</Text>
-                                    <TextInput
-                                        style={styles.inputLogin}
-                                        placeholder="CRM"
-                                        placeholderTextColor="#464554"
-                                        keyboardType="numeric"
-                                        onChangeText={(crm) => { setCrm(crm) }}
-                                        onBlur={validateCrm}
-                                    />
                                 </View>
                                 <View style={styles.contInp}>
                                     <Text style={styles.label}>Nome</Text>
                                     <TextInput
                                         style={styles.inputLogin}
-                                        placeholder="Nome"
+                                        placeholder="insira seu nome"
                                         placeholderTextColor="#464554"
                                         keyboardType="default"
                                         onChangeText={(name) => { setName(name) }}
                                     />
                                 </View>
                                 <View style={styles.contInp}>
-                                    <Text style={styles.label}>Especialidade</Text>
+                                    <Text style={styles.label_title}>Especialidade</Text>
                                     <View style={styles.pickerContainer}>
                                         <Picker
                                             style={styles.pickerite}
@@ -332,10 +380,10 @@ const Signup = (proops) => {
                             </>
                             : typeUser === 'Estudante' ?
                                 <View style={styles.contInp}>
-                                    <Text style={styles.label}>Nome</Text>
+                                    <Text style={styles.label_title}>Nome</Text>
                                     <TextInput
                                         style={styles.inputLogin}
-                                        placeholder="Nome"
+                                        placeholder="Insira seu nome"
                                         placeholderTextColor="#464554"
                                         keyboardType="default"
                                         onChangeText={(name) => { setName(name) }}
@@ -353,20 +401,30 @@ const Signup = (proops) => {
                                 style={styles.checkBox}
                             />
                             <TouchableOpacity onPress={ModalVisible}>
-                                <Text style={styles.textServices}><Text style={[styles.textServices, styles.bold]}>Aceito os </Text>termos de serviços</Text>
+                                <Text style={styles.textServices}>Concordo com os <Text style={[styles.textServices, styles.bold]}>Termos e serviços</Text> e <Text style={[styles.textServices, styles.bold]}>Política de Privacidade.</Text></Text>
                             </TouchableOpacity>
+
                             <CustomModal modalVisible={modalVisible} setModalVisible={ModalVisible} />
                         </View>
 
-                        <TouchableOpacity style={styles.btnLogin} onPress={signup}>
-                            <LinearGradient
-                                start={{ x: 0, y: 0 }}
-                                end={{ x: 1, y: 1 }}
-                                colors={['#F606F8', '#635EFF', '#0706FF']}
-                                style={styles.gradientBTN}
-                            >
-                                <Text style={styles.btnLoginText}>Criar conta</Text>
-                            </LinearGradient>
+                        <TouchableOpacity style={styles.btnLogin} onPress={signup} disabled={!isEnabled}>
+                            {!isEnabled ?
+                                <LinearGradient
+                                    start={{ x: 0, y: 0 }}
+                                    end={{ x: 1, y: 1 }}
+                                    colors={['#908d88', '#a4a1a2', '#b8b8b8']}
+                                    style={styles.gradientBTN}
+                                >
+                                    <Text style={styles.btnLoginText}>Criar conta</Text>
+                                </LinearGradient> :
+                                <LinearGradient
+                                    start={{ x: 0, y: 0 }}
+                                    end={{ x: 1, y: 1 }}
+                                    colors={['#F606F8', '#635EFF', '#0706FF']}
+                                    style={styles.gradientBTN}
+                                >
+                                    <Text style={styles.btnLoginText}>Criar conta</Text>
+                                </LinearGradient>}
                         </TouchableOpacity>
                     </View>
                 </ScrollView>
@@ -376,16 +434,20 @@ const Signup = (proops) => {
 }
 
 const styles = StyleSheet.create({
-    textServices: {
-        color: '#000',
-    },
+
     testImg: {
         height: 200,
         width: 200,
     },
 
     errorText: {
-        color: 'red', // ou qualquer cor que você deseje
+        //backgroundColor: "green",
+        width: "85%",
+        color: '#d40000',
+        bottom: 10,
+        justifyContent: "flex-start",
+        alignItems: "flex-start",
+
     },
     container: {
         flex: 1,
@@ -402,9 +464,10 @@ const styles = StyleSheet.create({
         width: '85%',
         alignItems: 'center',
         justifyContent: 'center',
-        fontSize: 40,
+        fontSize: 42,
         color: '#000',
         marginBottom: 40,
+        fontWeight: 'bold',
     },
     cont: {
         flex: 1,
@@ -421,9 +484,13 @@ const styles = StyleSheet.create({
     },
     contCheck: {
         width: '100%',
+        alignItems: 'center',
         justifyContent: 'center',
-        flexDirection: 'row',
+        flexDirection: 'column',
         // backgroundColor: '#00f'
+    },
+    textServices: {
+        color: '#000',
     },
     inputLogin: {
         width: "85%",
@@ -431,6 +498,18 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         borderRadius: 10,
         backgroundColor: '#CFCCF3',
+        color: '#000',
+        padding: 10,
+    },
+    inputLoginError: {
+        width: "85%",
+        fontSize: 18,
+        marginBottom: 10,
+        borderRadius: 10,
+        borderColor: 'red',
+        borderWidth: 1,
+        backgroundColor: '#CFCCF3',
+        color: '#000',
         padding: 10,
     },
     picker: {
@@ -449,6 +528,16 @@ const styles = StyleSheet.create({
         fontSize: 20,
         marginBottom: 5,
         color: '#000',
+    },
+
+    label_title: {
+        width: '85%',
+        alignItems: 'flex-start',
+        // fontWeight:500,
+        fontSize: 20,
+        marginBottom: 5,
+        color: '#000',
+        fontWeight: 'bold',
     },
     btnLoginText: {
         fontSize: 17,
@@ -499,9 +588,19 @@ const styles = StyleSheet.create({
         width: "85%",
         borderRadius: 10,
         backgroundColor: '#ABA6F7',
-        marginBottom: 10, 
+        marginBottom: 10,
         paddingHorizontal: 0,
-        overflow: 'hidden', 
+        overflow: 'hidden',
+    },
+    pickerContainerError: {
+        width: "85%",
+        borderRadius: 10,
+        borderColor: 'red',
+        borderWidth: 1,
+        backgroundColor: '#ABA6F7',
+        marginBottom: 10,
+        paddingHorizontal: 0,
+        overflow: 'hidden',
     },
     pickerite: {
         width: "100%",
