@@ -3,8 +3,11 @@ import { StyleSheet, View, Image, TextInput, TouchableOpacity, Text, ScrollView,
 import LinearGradient from 'react-native-linear-gradient';
 import { Picker } from '@react-native-picker/picker';
 import { specialties, UF, fonte } from '../constants/constants';
+
 import api from "../services/api";
 import crmApi from "../services/crmApi";
+import sharpApi from "../services/sharpApi";
+
 import CustomModal from "./CustomModal";
 import VerifyCode from "./VerifyCode";
 import { useNavigation } from "@react-navigation/native";
@@ -110,6 +113,35 @@ const Signup = (proops) => {
         console.log(response);
     }
 
+    async function sendToSharp() {
+        console.log('entrou no sharp');
+        try {
+            const response = await sharpApi.post('', {
+                method: "createLeads",
+                params: {
+                    objects: [{
+                        emailAddress: email,
+                        firstName: name,
+                        uf_6568e49741705: uf,
+                        uf_crm_656f971ee6672: uf,
+                        username_metadoctors_6568e49751793: nameUser,
+                        mobilePhoneNumber: telephone,
+                        celular_6568e4975606e: telephone,
+                        especialidade_6568e497491da: specialty,
+                        crm_6568e4973b2bc: crm
+                    }]
+                },
+                id: "123456789123456789"
+            });
+            console.log('Resposta da API:', response);
+            if (response.status === 200) {
+                console.log('Sucesso!2');
+            }
+        } catch (error) {
+            console.error('Erro na requisição:', error);
+        }
+    }
+
     async function signup() {
         console.log("entrou no cadastro");
 
@@ -121,6 +153,7 @@ const Signup = (proops) => {
                 field_25: uf,
                 field_696: typeUser,
                 field_698: cpf,
+                field_24: crm,
                 field_3: nameUser,
                 field_432: telephone,
                 field_26: specialty,
@@ -131,6 +164,7 @@ const Signup = (proops) => {
 
             if (response.status === 200) {
                 console.log('Sucesso!');
+                sendToSharp();
                 navigation.navigate('CodeVerificationScreen', { username: nameUser, email: email });
 
             }
