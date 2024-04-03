@@ -404,6 +404,7 @@ const Signup = (proops) => {
                                             onValueChange={(itemValue, itemIndex) =>
                                                 setSpecialty(itemValue)
                                             }
+                                            // selectionColor="#fff"
                                             dropdownIconColor="#000"
                                             mode="dropdown">
                                             {specialties.map((specialties, index) => (
@@ -440,8 +441,8 @@ const Signup = (proops) => {
                                 value={isEnabled}
                                 style={styles.checkBox}
                             />
-                            <TouchableOpacity onPress={ModalVisible}>
-                                <Text style={[styles.textServices, styles.contTextServices]}>Concordo com os <Text style={[styles.textServices, styles.bold]}>Termos e serviços</Text> e <Text style={[styles.textServices, styles.bold]}>Política de Privacidade.</Text></Text>
+                            <TouchableOpacity style={styles.contTextServices}  onPress={ModalVisible}>
+                                <Text style={[styles.textServices]}>Concordo com os <Text style={[styles.textServices, styles.bold]}>Termos e serviços</Text> e <Text style={[styles.textServices, styles.bold]}>Política de Privacidade.</Text></Text>
                             </TouchableOpacity>
 
                             <CustomModal modalVisible={modalVisible} setModalVisible={ModalVisible} />
@@ -533,7 +534,7 @@ const styles = StyleSheet.create({
         color: '#000',
     },
     contTextServices: {
-        width: '75%',
+        width: '100%',
         // backgroundColor: 'red',
         alignItems: 'center',
         alignItems: 'center',
@@ -634,7 +635,7 @@ const styles = StyleSheet.create({
     pickerContainer: {
         width: "85%",
         borderRadius: 10,
-        backgroundColor: '#ABA6F7',
+        // backgroundColor: '#ABA6F7',
         marginBottom: 10,
         paddingHorizontal: 0,
         overflow: 'hidden',
