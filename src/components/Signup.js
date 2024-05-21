@@ -266,7 +266,7 @@ const Signup = (proops) => {
                         </View>
 
                         <View style={styles.contInp}>
-                            <Text style={styles.label_title}>Telefone</Text>
+                            <Text style={styles.label_title}>Celular</Text>
                             {telephoneError ?
                                 <TextInput
                                     style={styles.inputLoginError}
@@ -287,30 +287,6 @@ const Signup = (proops) => {
                                     onBlur={() => errorFillIn(telephone, setTelephoneError)}
                                 />}
                             {telephoneError && telephone === '' ? <Text style={styles.errorText}>{errorText}</Text> : null}
-                        </View>
-
-                        <View style={styles.contInp}>
-                            <Text style={styles.label_title}>CPF</Text>
-                            {cpfError ?
-                                <TextInput
-                                    style={styles.inputLoginError}
-                                    placeholder="Insira seu CPF"
-                                    placeholderTextColor="#464554"
-                                    keyboardType="numeric"
-                                    value={cpf}
-                                    onChangeText={(text) => formatCPF(text)}
-                                    onBlur={() => errorFillIn(cpf, setCpfError)}
-                                /> :
-                                <TextInput
-                                    style={styles.inputLogin}
-                                    placeholder="Insira seu CPF"
-                                    placeholderTextColor="#464554"
-                                    keyboardType="numeric"
-                                    value={cpf}
-                                    onChangeText={(text) => formatCPF(text)}
-                                    onBlur={() => errorFillIn(cpf, setCpfError)}
-                                />}
-                            {cpfError && cpf === '' ? <Text style={styles.errorText}>{errorText}</Text> : null}
                         </View>
 
                         <View style={styles.contInp}>
@@ -335,103 +311,64 @@ const Signup = (proops) => {
                                 </Picker>
                             </View>
                         </View>
-
                         <View style={styles.contInp}>
-                            <Text style={styles.label_title}>Tipo de usuário</Text>
+                            <Text style={styles.label_title}>CRM</Text>
+                            {crmError || errorTextCrm ?
+                                <TextInput
+                                    style={styles.inputLoginError}
+                                    placeholder="insira seu CRM"
+                                    placeholderTextColor="#464554"
+                                    keyboardType="numeric"
+                                    onChangeText={(crm) => { setCrm(crm) }}
+                                    onBlur={() => errorFillIn(crm, setCrmError)}
+                                    onEndEditing={validateCrm}
+                                /> :
+                                <TextInput
+                                    style={styles.inputLogin}
+                                    placeholder="insira seu CRM"
+                                    placeholderTextColor="#464554"
+                                    keyboardType="numeric"
+                                    onChangeText={(crm) => { setCrm(crm) }}
+                                    onBlur={() => errorFillIn(crm, setCrmError)}
+                                    onEndEditing={validateCrm}
+                                />}
+                            {crmError && crm === "" ? <Text style={styles.errorText}>{errorText}</Text> : null}
+                            {errorTextCrm ? <Text style={styles.errorText}>{errorTextCrm}</Text> : null}
+                        </View>
+                        <View style={styles.contInp}>
+                            <Text style={styles.label}>Nome</Text>
+                            <TextInput
+                                style={styles.inputLogin}
+                                value={name}
+                                placeholder="insira seu nome"
+                                placeholderTextColor="#464554"
+                                keyboardType="default"
+                                onChangeText={(name) => { setName(name) }}
+                            />
+                        </View>
+                        <View style={styles.contInp}>
+                            <Text style={styles.label_title}>Especialidade</Text>
                             <View style={styles.pickerContainer}>
                                 <Picker
-                                    onBlur={() => errorFillIn(typeUser, setTypeError)}
                                     style={styles.pickerite}
-                                    selectedValue={typeUser}
+                                    selectedValue={specialty}
                                     onValueChange={(itemValue, itemIndex) =>
-                                        setTypeUser(itemValue)
+                                        setSpecialty(itemValue)
                                     }
-                                    dropdownIconColor="#000" // Define a cor da seta para preto
-                                    mode="dropdown" // Define o modo de exibição do Picker como dropdown
-                                >
-                                    <Picker.Item style={styles.picker} label="O que você é?" value="" />
-                                    <Picker.Item style={styles.picker} label="Eu sou Estudante" value="Estudante" />
-                                    <Picker.Item style={styles.picker} label="Eu sou Médico(a)" value="Medico" />
-                                    <Picker.Item style={styles.picker} label="Eu sou Residente" value="Residente" />
+                                    // selectionColor="#fff"
+                                    dropdownIconColor="#000"
+                                    mode="dropdown">
+                                    {specialties.map((specialties, index) => (
+                                        <Picker.Item
+                                            key={index}
+                                            label={specialties}
+                                            value={specialties}
+                                            style={styles.picker}
+                                        />
+                                    ))}
                                 </Picker>
                             </View>
-                            {TypeError && typeUser === "" ? <Text style={styles.errorText}>{errorText}</Text> : null}
                         </View>
-
-                        {typeUser === 'Medico' || typeUser === 'Residente' ?
-                            <>
-                                <View style={styles.contInp}>
-                                    <Text style={styles.label_title}>CRM</Text>
-                                    {crmError || errorTextCrm ?
-                                        <TextInput
-                                            style={styles.inputLoginError}
-                                            placeholder="insira seu CRM"
-                                            placeholderTextColor="#464554"
-                                            keyboardType="numeric"
-                                            onChangeText={(crm) => { setCrm(crm) }}
-                                            onBlur={() => errorFillIn(crm, setCrmError)}
-                                            onEndEditing={validateCrm}
-                                        /> :
-                                        <TextInput
-                                            style={styles.inputLogin}
-                                            placeholder="insira seu CRM"
-                                            placeholderTextColor="#464554"
-                                            keyboardType="numeric"
-                                            onChangeText={(crm) => { setCrm(crm) }}
-                                            onBlur={() => errorFillIn(crm, setCrmError)}
-                                            onEndEditing={validateCrm}
-                                        />}
-                                    {crmError && crm === "" ? <Text style={styles.errorText}>{errorText}</Text> : null}
-                                    {errorTextCrm ? <Text style={styles.errorText}>{errorTextCrm}</Text> : null}
-                                </View>
-                                <View style={styles.contInp}>
-                                    <Text style={styles.label}>Nome</Text>
-                                    <TextInput
-                                        style={styles.inputLogin}
-                                        value={name}
-                                        placeholder="insira seu nome"
-                                        placeholderTextColor="#464554"
-                                        keyboardType="default"
-                                        onChangeText={(name) => { setName(name) }}
-                                    />
-                                </View>
-                                <View style={styles.contInp}>
-                                    <Text style={styles.label_title}>Especialidade</Text>
-                                    <View style={styles.pickerContainer}>
-                                        <Picker
-                                            style={styles.pickerite}
-                                            selectedValue={specialty}
-                                            onValueChange={(itemValue, itemIndex) =>
-                                                setSpecialty(itemValue)
-                                            }
-                                            // selectionColor="#fff"
-                                            dropdownIconColor="#000"
-                                            mode="dropdown">
-                                            {specialties.map((specialties, index) => (
-                                                <Picker.Item
-                                                    key={index}
-                                                    label={specialties}
-                                                    value={specialties}
-                                                    style={styles.picker}
-                                                />
-                                            ))}
-                                        </Picker>
-                                    </View>
-                                </View>
-                            </>
-                            : typeUser === 'Estudante' ?
-                                <View style={styles.contInp}>
-                                    <Text style={styles.label_title}>Nome</Text>
-                                    <TextInput
-                                        style={styles.inputLogin}
-                                        placeholder="Insira seu nome"
-                                        placeholderTextColor="#464554"
-                                        keyboardType="default"
-                                        onChangeText={(name) => { setName(name) }}
-                                    />
-                                </View> : null
-                        }
-
                         <View style={styles.contCheck}>
                             <Switch
                                 trackColor={{ false: '#767577', true: '#BB80CF' }}
@@ -441,7 +378,7 @@ const Signup = (proops) => {
                                 value={isEnabled}
                                 style={styles.checkBox}
                             />
-                            <TouchableOpacity style={styles.contTextServices}  onPress={ModalVisible}>
+                            <TouchableOpacity style={styles.contTextServices} onPress={ModalVisible}>
                                 <Text style={[styles.textServices]}>Concordo com os <Text style={[styles.textServices, styles.bold]}>Termos e serviços</Text> e <Text style={[styles.textServices, styles.bold]}>Política de Privacidade.</Text></Text>
                             </TouchableOpacity>
 
