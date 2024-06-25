@@ -91,7 +91,7 @@ const Signup = (proops) => {
             setErrorText('Preencha este campo!')
         }
     }
-    
+
     function generateRandomNumber() {
         return Math.floor(Math.random() * 900) + 100;
     }
@@ -129,15 +129,15 @@ const Signup = (proops) => {
         })
         const response = await registerCrm(`/verify?crm=${crm}&uf=${uf}`);
         try {
-            if (response.status === 200 && response.data.uf_cadastrada && response.data.num_crm_existe){
+            if (response.status === 200 && response.data.uf_cadastrada && response.data.num_crm_existe) {
                 console.log(response.data);
                 console.log("foiiii")
                 setErrorTextCrm('crm já cadastrado!');
             }
-            else{
+            else {
                 setErrorTextCrm('');
             }
-        }catch(error) {
+        } catch (error) {
             console.log(error)
         }
     }
@@ -175,41 +175,48 @@ const Signup = (proops) => {
         generateUsername(name);
         console.log("entrou no cadastro ", nameUser);
 
-        try {
-            const response = await api.post('v1/signup', {
-                signup_email: email,
-                signup_password: senha,
-                field_1: name,
-                field_25: uf,
-                field_24: crm,
-                field_3: nameUser,
-                field_432: telephone,
-                field_26: specialty,
-                legal_agreement: isEnabled,
-            });
+        if (!emailError && !crmError && !senhaError && telephoneError) {
 
-            console.log('Resposta da API:', response.data);
 
-            if (response.status === 200) {
-                console.log('Sucesso!');
-                sendToSharp();
-                navigation.navigate('CodeVerificationScreen', { username: nameUser, email: email });
 
+            try {
+                const response = await api.post('v1/signup', {
+                    signup_email: email,
+                    signup_password: senha,
+                    field_1: name,
+                    field_25: uf,
+                    field_24: crm,
+                    field_3: nameUser,
+                    field_432: telephone,
+                    field_26: specialty,
+                    legal_agreement: isEnabled,
+                });
+
+                console.log('Resposta da API:', response.data);
+
+                if (response.status === 200) {
+                    console.log('Sucesso!');
+                    sendToSharp();
+                    navigation.navigate('CodeVerificationScreen', { username: nameUser, email: email });
+
+                }
+            } catch (error) {
+                console.error('Erro na requisição:', error);
+
+                if (error.response.status === 400) {
+                    console.log('Erro 400 - Bad Request:', error);
+                    console.log('aaaaa: ', error.response.data.message.signup_email);
+                    scrollViewRef.current.scrollTo({ y: 0, animated: true });
+                    setErrorTextEmail(error.response.data.message.signup_email);
+                    setErrorTextUser(error.response.data.message.field_3);
+                } else if (error.response.status === 401) {
+                    console.log('Erro 401 - Unauthorized');
+                } else {
+                    console.error('Erro não tratado:', error);
+                }
             }
-        } catch (error) {
-            console.error('Erro na requisição:', error);
-
-            if (error.response.status === 400) {
-                console.log('Erro 400 - Bad Request:', error);
-                console.log('aaaaa: ', error.response.data.message.signup_email);
-                scrollViewRef.current.scrollTo({ y: 0, animated: true });
-                setErrorTextEmail(error.response.data.message.signup_email);
-                setErrorTextUser(error.response.data.message.field_3);
-            } else if (error.response.status === 401) {
-                console.log('Erro 401 - Unauthorized');
-            } else {
-                console.error('Erro não tratado:', error);
-            }
+        }else{
+            setTypeError("confira se todos os campos estão corretos")
         }
     }
 
@@ -368,7 +375,7 @@ const Signup = (proops) => {
                             <TextInput
                                 style={styles.inputLogin}
                                 value={name}
-                                editable = {false}
+                                editable={false}
                                 placeholder="insira seu nome"
                                 placeholderTextColor="#464554"
                                 keyboardType="default"
@@ -414,6 +421,7 @@ const Signup = (proops) => {
                             <CustomModal modalVisible={modalVisible} setModalVisible={ModalVisible} />
                         </View>
 
+                        {TypeError? <Text style={styles.errorText}>{TypeError}</Text>: null }
                         <TouchableOpacity style={styles.btnLogin} onPress={signup} disabled={!isEnabled}>
                             {!isEnabled ?
                                 <LinearGradient
