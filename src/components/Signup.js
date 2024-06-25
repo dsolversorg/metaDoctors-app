@@ -175,7 +175,7 @@ const Signup = (proops) => {
         generateUsername(name);
         console.log("entrou no cadastro ", nameUser);
 
-        if (!emailError && !crmError && !senhaError && telephoneError) {
+        if ((!emailError && !crmError && !senhaError && telephoneError) || (email || crm || senha || telephone)) {
 
 
 
@@ -215,7 +215,7 @@ const Signup = (proops) => {
                     console.error('Erro não tratado:', error);
                 }
             }
-        }else{
+        } else {
             setTypeError("confira se todos os campos estão corretos")
         }
     }
@@ -420,8 +420,9 @@ const Signup = (proops) => {
 
                             <CustomModal modalVisible={modalVisible} setModalVisible={ModalVisible} />
                         </View>
-
-                        {TypeError? <Text style={styles.errorText}>{TypeError}</Text>: null }
+                        <View style={styles.contError}>
+                            {TypeError ? <Text style={styles.errorText}>{TypeError}</Text> : null}
+                        </View>
                         <TouchableOpacity style={styles.btnLogin} onPress={signup} disabled={!isEnabled}>
                             {!isEnabled ?
                                 <LinearGradient
@@ -504,6 +505,13 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         // backgroundColor: '#00f'
     },
+    contError: {
+        width: '85%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'column',
+        marginTop: 25,
+    },
     textServices: {
         color: '#000',
     },
@@ -578,7 +586,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: 50,
-        marginTop: 25,
+        marginTop: 5,
         borderRadius: 9,
         padding: 10,
         shadowOffset: { height: 1, width: 1 },
