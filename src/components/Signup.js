@@ -617,7 +617,7 @@ const styles = StyleSheet.create({
     pickerContainer: {
         width: "85%",
         borderRadius: 10,
-        // backgroundColor: '#ABA6F7',
+        backgroundColor: '#ABA6F7',
         marginBottom: 10,
         paddingHorizontal: 0,
         overflow: 'hidden',
