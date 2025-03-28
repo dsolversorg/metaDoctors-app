@@ -375,7 +375,7 @@ const Signup = (proops) => {
                             <TextInput
                                 style={styles.inputLogin}
                                 value={name}
-                                editable={false}
+                                editable={true}
                                 placeholder="insira seu nome"
                                 placeholderTextColor="#464554"
                                 keyboardType="default"
